@@ -22,25 +22,32 @@ export function ProfileCard({ profile }: ProfileCardProps) {
 
   return (
     <Card className="overflow-hidden transition-shadow hover:shadow-lg">
-      <div className="relative aspect-[4/3] bg-muted">
-        {profile.photo_url ? (
-          <Image
-            src={profile.photo_url}
-            alt={profile.display_name}
-            fill
-            className="object-cover"
-            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-          />
-        ) : (
-          <div className="flex h-full items-center justify-center">
-            <User className="h-16 w-16 text-muted-foreground/30" />
-          </div>
-        )}
-      </div>
+      <Link href={`/profiles/${profile.profile_id}`}>
+        <div className="relative aspect-[4/3] bg-muted">
+          {profile.photo_url ? (
+            <Image
+              src={profile.photo_url}
+              alt={profile.display_name}
+              fill
+              className="object-cover"
+              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+            />
+          ) : (
+            <div className="flex h-full items-center justify-center">
+              <User className="h-16 w-16 text-muted-foreground/30" />
+            </div>
+          )}
+        </div>
+      </Link>
       <CardContent className="p-5">
         <div className="flex items-start justify-between">
           <div>
-            <h3 className="font-semibold">{profile.display_name}</h3>
+            <Link
+              href={`/profiles/${profile.profile_id}`}
+              className="font-semibold hover:text-primary"
+            >
+              {profile.display_name}
+            </Link>
             {profile.location && (
               <p className="mt-1 flex items-center gap-1 text-sm text-muted-foreground">
                 <MapPin className="h-3.5 w-3.5" />
@@ -73,12 +80,17 @@ export function ProfileCard({ profile }: ProfileCardProps) {
           </div>
         )}
 
-        <Button
-          asChild
-          className="mt-4 w-full bg-[hsl(var(--accent))] hover:bg-[hsl(var(--accent))]/90"
-        >
-          <Link href={`/donate/${profile.profile_id}`}>Donate</Link>
-        </Button>
+        <div className="mt-4 flex gap-2">
+          <Button asChild variant="outline" className="flex-1">
+            <Link href={`/profiles/${profile.profile_id}`}>Their Story</Link>
+          </Button>
+          <Button
+            asChild
+            className="flex-1 bg-[hsl(var(--accent))] hover:bg-[hsl(var(--accent))]/90"
+          >
+            <Link href={`/donate/${profile.profile_id}`}>Donate</Link>
+          </Button>
+        </div>
       </CardContent>
     </Card>
   );
